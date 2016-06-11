@@ -1,0 +1,131 @@
+/* testing */
+
+/*
+#303841
+#3A4750
+#00ADB5
+#EEEEEE
+*/
+
+/******* BASE CLASSES *******/
+body {
+  background-color: #303841;
+  color: #00ADB5;
+  font-family: "PT Mono", sans-serif;
+
+  margin: 0 auto;
+  text-align: center;
+
+  display: flex;
+  /*align-items: center;*/
+  justify-content: center;
+}
+
+button {
+  /* Maybe I should use something else instead of buttons */
+  background-color: #EEEEEE;
+  border-radius: 5%;
+  outline: none;
+  /*padding: 5% 20%;*/
+}
+
+h1 {
+  font-size: 3em;
+}
+
+/******* MAIN CLASSES *******/
+
+#app-container {
+  width: 60%;
+}
+
+#customization-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /*width: 200px;
+  height: 200px;*/
+}
+
+#customization-controls div {
+  /*display: flex;*/
+
+  /*justify-content: center;*/
+  padding: 0 10%;
+  /*margin: 0 10%;*/
+}
+
+#customization-controls div.children {
+  display: flex;
+  /*text-align: center;
+  margin: 0 auto;*/
+}
+
+
+
+.controls-with-label {
+
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  font-size: 2em;
+
+  background-color: #ddd;
+}
+
+.controls.children {
+  width: 100px;
+}
+
+.fa {
+  font-size: 2em;
+  color: #00ADB5;
+}
+
+#timer-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 4;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 2em;
+  /*margin-left: 10px;
+  margin-right: 10px;*/
+}
+
+#timer-buttons div {
+  padding: 0 10%;
+}
+
+#timer-body {
+  height: 400;
+  margin: 10% auto;
+  display: flex;
+  /*display: flex;*/
+  flex-direction: column;
+  background-color: #3A4750;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+}
+
+#timer-display {
+
+  font-size: 5em;
+  /*justify-content: center;*/
+
+}
+
+
+
+
+
+
+
+
+
+
+
+/*       */

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+    <!-- Another font option -->
+    <!-- <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'> -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Pomodoro Timer - Alexander Kallaway</title>
+  </head>
+  <body>
+    <div id="app-container">
+      <h1>POMODORO CLOCK</h1>
+      <!-- <div> -->
+
+      <div id="timer-body">
+        <div id="status">Focus</div>
+        <div id="timer-display">
+          <p>25</p>
+        </div>
+
+        <div id="timer-buttons">
+          <div id="button-start"><i class="fa fa-play"></i></div>
+          <div id="button-pause"><i class="fa fa-pause"></i></div>
+          <!-- Change to an icon that better represents reset? -->
+          <div id="button-reset"><i class="fa fa-stop"></i></div>
+        </div>
+      </div>
+
+
+      <div id="customization-controls">
+        <!-- work buttons -->
+        <div class="controls-with-label">
+          <p>Session Length</p>
+          <div class="controls">
+            <div id="less-work"><i class="fa fa-angle-down"></i> 25 <i class="fa fa-angle-up"></i></div>
+            <!-- <div id="user-work-display">25</div>
+            <div id="more-work"><i class="fa fa-angle-up"></i></div> -->
+          </div>
+        </div>
+        <!-- rest buttons -->
+        <div class="controls-with-label">
+          <p>Break Length</p>
+          <div class="controls">
+            <div id="less-rest"><i class="fa fa-angle-down"></i></div>
+            <p id="user-rest-display">5</p>
+            <div id="more-rest"><i class="fa fa-angle-up"></i></div>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- end of div container -->
+
+    <!-- <footer>
+      <div>Made by <a href="http://kallaway.github.io/">Alexander Kallaway</a></div>
+    </footer> -->
+
+    <script src="main.js"></script>
+  </body>
+</html>
