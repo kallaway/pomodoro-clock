@@ -19,6 +19,9 @@ var lessRestBtn = document.getElementById('less-rest');
 var displayUserWork = document.getElementById('user-work-display');
 var displayUserRest = document.getElementById('user-rest-display');
 
+var canvas = document.getElementById('pomodoro-display-canvas');
+var ctx = canvas.getContext('2d');
+
 // Find a quick way to calculate the number of seconds in a given
 var work = 25;
 var rest = 5;
@@ -219,7 +222,41 @@ lessRestBtn.addEventListener("click", function() {
 
 
 
+// Working with canvas
 
+function drawCanvas() {
+  // draw the circle
+  var circle = new Path2D();
+  ctx.fillStyle = "#EEEEEE";
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#EEEEEE";
+  //circle.moveTo(150, 150);
+  // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+  //circle.arc(150, 150, 120, 0, 4 * Math.PI);
+
+  //ctx.beginPath();
+  circle.arc(200,200,150,0,Math.PI*2,true); // Outer circle
+
+  ctx.stroke(circle);
+  console.log('the draw function gets called');
+
+  ctx.font = "48px PT Mono";
+  ctx.fillText("Focus", 130, 120);
+
+  // on top of the circle put the type of activity
+  // add time in the center?
+}
+
+// then with time fill it with the right amount of color
+
+function init() {
+  drawCanvas();
+}
+
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  init();
+});
 
 
 

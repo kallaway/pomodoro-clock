@@ -15,6 +15,8 @@
       <h1>POMODORO CLOCK</h1>
       <!-- <div> -->
 
+      <canvas id="pomodoro-display-canvas" height="400px" width="400px"></canvas>
+
       <div id="timer-body">
         <div id="status">Focus</div>
         <div id="timer-display">
@@ -22,10 +24,10 @@
         </div>
 
         <div id="timer-buttons">
-          <div id="button-start"><i class="fa fa-play"></i></div>
-          <div id="button-pause"><i class="fa fa-pause"></i></div>
+          <div class="clock-button" id="button-start"><i class="fa fa-play"></i></div>
+          <div class="clock-button" id="button-pause"><i class="fa fa-pause"></i></div>
           <!-- Change to an icon that better represents reset? -->
-          <div id="button-reset"><i class="fa fa-stop"></i></div>
+          <div class="clock-button" id="button-reset"><i class="fa fa-stop"></i></div>
         </div>
       </div>
 
@@ -35,18 +37,18 @@
         <div class="controls-with-label">
           <p>Session Length</p>
           <div class="controls">
-            <div id="less-work"><i class="fa fa-angle-down"></i> 25 <i class="fa fa-angle-up"></i></div>
-            <!-- <div id="user-work-display">25</div>
-            <div id="more-work"><i class="fa fa-angle-up"></i></div> -->
+            <div class="clock-button" id="less-work"><i class="fa fa-angle-down"></i></div>
+            <div id="user-work-display">25</div>
+            <div class="clock-button" id="more-work"><i class="fa fa-angle-up"></i></div>
           </div>
         </div>
         <!-- rest buttons -->
         <div class="controls-with-label">
           <p>Break Length</p>
           <div class="controls">
-            <div id="less-rest"><i class="fa fa-angle-down"></i></div>
+            <div class="clock-button" id="less-rest"><i class="fa fa-angle-down"></i></div>
             <p id="user-rest-display">5</p>
-            <div id="more-rest"><i class="fa fa-angle-up"></i></div>
+            <div class="clock-button" id="more-rest"><i class="fa fa-angle-up"></i></div>
           </div>
         </div>
       </div>
