@@ -6,6 +6,10 @@
 
 // TODO: get rid of innerHTML
 // TODO: alternate background for work/rest
+// TODO: Find out how to center the text in canvas
+// TODO: On pause, the timer also updates with the default value
+// TODO: Make sure relax mode is working as well
+// TODO: Change color for the relax mode.
 
 var display = document.getElementById('timer-display');
 var displayStatus = document.getElementById('status');
@@ -21,6 +25,10 @@ var displayUserRest = document.getElementById('user-rest-display');
 
 var canvas = document.getElementById('pomodoro-display-canvas');
 var ctx = canvas.getContext('2d');
+
+var progressArc;
+var canvasWidth = 400;
+var canvasHeight = 400;
 
 // Find a quick way to calculate the number of seconds in a given
 var work = 25;
@@ -129,6 +137,8 @@ var timer = {
       currentTime = getMinSec(secondsLeft);
       timer.displayTime(currentTime);
 
+      updateCanvas(secondsLeft, currentTime); // ?? here ???
+
       secondsLeft -= 1;
       // Testing
       timer.secondsLeft = secondsLeft;
@@ -187,6 +197,7 @@ startBtn.addEventListener("click", function() {
   // Check if the timer is already running. if so either block the button, or start over every time it is pressed
   if (!timer.isRunning) {
     timer.run(25); // HERE SOME CHECK AS TO WHAT TIME SHOULD IT GET FED
+    // Here also update the canvas with the right length of the arc and the time.
   }
 
   setTimeout(5000);
@@ -204,7 +215,6 @@ resetBtn.addEventListener("click", function() {
 // work buttons
 moreWorkBtn.addEventListener("click", function() {
   timer.increaseWork();
-
 });
 
 lessWorkBtn.addEventListener("click", function() {
@@ -220,6 +230,14 @@ lessRestBtn.addEventListener("click", function() {
   timer.decreaseRest();
 });
 
+canvas.addEventListener("click", function() {
+  if (timer.isRunning) {
+    timer.pause();
+  } else {
+    timer.run(timer.userWork); // or rest??? check this
+  }
+});
+
 
 
 // Working with canvas
@@ -230,21 +248,67 @@ function drawCanvas() {
   ctx.fillStyle = "#EEEEEE";
   ctx.lineWidth = 5;
   ctx.strokeStyle = "#EEEEEE";
-  //circle.moveTo(150, 150);
   // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-  //circle.arc(150, 150, 120, 0, 4 * Math.PI);
 
   //ctx.beginPath();
-  circle.arc(200,200,150,0,Math.PI*2,true); // Outer circle
-
+  circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true); // Outer circle
   ctx.stroke(circle);
   console.log('the draw function gets called');
 
   ctx.font = "48px PT Mono";
-  ctx.fillText("Focus", 130, 120);
+  if (timer.isWork) {
+    ctx.fillText("Focus", 130, 120);
+  } else {
+    ctx.fillText("Relax", 130, 120);
+  }
+
+
 
   // on top of the circle put the type of activity
   // add time in the center?
+}
+
+function updateCanvas(secondsLeft, timeObj) {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawCanvas();
+  // full circle is 2 PI.
+
+  if (timer.isWork) {
+    var secondsOverall = timer.userWork * 60;
+  } else {
+    var secondsOverall = timer.userRest * 60;
+  }
+
+  // console.log("SECONDS LEFT WHEN UPDATING CANVAS: " + secondsLeft);
+  // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
+
+  var secondsPassed = secondsOverall - secondsLeft;
+
+  var percentageToDisplay = secondsPassed / secondsOverall;
+  // what is the current number of Seconds overall
+  var arcPartToShow = Math.PI * 2 * percentageToDisplay; // since we are showing what's done not what's left
+
+  console.log("percentageToDisplay: " + percentageToDisplay);
+  console.log("Arc part to show: " + arcPartToShow);
+
+  ctx.fillStyle = "#00ADB5";
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = "#00ADB5";
+
+  progressArc = new Path2D();
+  progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, 0, arcPartToShow, false);
+  ctx.stroke(progressArc);
+
+  // show time
+
+  var timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
+
+  ctx.font = "72px PT Mono";
+  ctx.fillText(timeDisplayedOnCanvas, 95, 230);
+
+
+  //
 }
 
 // then with time fill it with the right amount of color
