@@ -10,6 +10,10 @@
 // TODO: On pause, the timer also updates with the default value
 // TODO: Make sure relax mode is working as well
 // TODO: Change color for the relax mode.
+// TODO: Change mouse cursor when hovering over the buttons
+
+var restColor = '#591FCE';
+var workColor = '00ADB5';
 
 var display = document.getElementById('timer-display');
 var displayStatus = document.getElementById('status');
@@ -29,6 +33,8 @@ var ctx = canvas.getContext('2d');
 var progressArc;
 var canvasWidth = 400;
 var canvasHeight = 400;
+var centerX = 200;
+var centerY = 200;
 
 // Find a quick way to calculate the number of seconds in a given
 var work = 25;
@@ -238,8 +244,6 @@ canvas.addEventListener("click", function() {
   }
 });
 
-
-
 // Working with canvas
 
 function drawCanvas() {
@@ -257,15 +261,42 @@ function drawCanvas() {
 
   ctx.font = "48px PT Mono";
   if (timer.isWork) {
-    ctx.fillText("Focus", 130, 120);
+    ctx.fillText("Focus", centerX, 120);
   } else {
-    ctx.fillText("Relax", 130, 120);
+    ctx.fillText("Relax", centerX, 120);
   }
 
-
+  // ctx.font = "72px PT Mono";
+  // ctx.textAlign = 'center';
+  // ctx.fillText(timer.initWork, centerX, centerY + 30);
 
   // on top of the circle put the type of activity
   // add time in the center?
+}
+
+function initCanvas() {
+  var circle = new Path2D();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = "#EEEEEE";
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#EEEEEE";
+  // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+  //ctx.beginPath();
+  circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true); // Outer circle
+  ctx.stroke(circle);
+  console.log('the draw function gets called');
+
+  ctx.font = "48px PT Mono";
+  if (timer.isWork) {
+    ctx.fillText("Focus", centerX, 120);
+  } else {
+    ctx.fillText("Relax", centerX, 120);
+  }
+
+  ctx.font = "72px PT Mono";
+
+  ctx.fillText(timer.initWork, centerX, centerY + 30);
 }
 
 function updateCanvas(secondsLeft, timeObj) {
@@ -273,13 +304,15 @@ function updateCanvas(secondsLeft, timeObj) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCanvas();
   // full circle is 2 PI.
-
   if (timer.isWork) {
     var secondsOverall = timer.userWork * 60;
+    ctx.fillStyle = workColor;
+    ctx.strokeStyle = workColor;
   } else {
     var secondsOverall = timer.userRest * 60;
+    ctx.fillStyle = restColor;
+    ctx.strokeStyle = restColor;
   }
-
   // console.log("SECONDS LEFT WHEN UPDATING CANVAS: " + secondsLeft);
   // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
 
@@ -292,9 +325,7 @@ function updateCanvas(secondsLeft, timeObj) {
   console.log("percentageToDisplay: " + percentageToDisplay);
   console.log("Arc part to show: " + arcPartToShow);
 
-  ctx.fillStyle = "#00ADB5";
   ctx.lineWidth = 10;
-  ctx.strokeStyle = "#00ADB5";
 
   progressArc = new Path2D();
   progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, 0, arcPartToShow, false);
@@ -305,8 +336,7 @@ function updateCanvas(secondsLeft, timeObj) {
   var timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
 
   ctx.font = "72px PT Mono";
-  ctx.fillText(timeDisplayedOnCanvas, 95, 230);
-
+  ctx.fillText(timeDisplayedOnCanvas, centerX, centerY + 30); // change 30 to halfHeight of the time
 
   //
 }
@@ -314,7 +344,7 @@ function updateCanvas(secondsLeft, timeObj) {
 // then with time fill it with the right amount of color
 
 function init() {
-  drawCanvas();
+  initCanvas();
 }
 
 

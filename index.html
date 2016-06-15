@@ -18,10 +18,7 @@
       <canvas id="pomodoro-display-canvas" height="400px" width="400px"></canvas>
 
       <div id="timer-body">
-        <div id="status">Focus</div>
-        <div id="timer-display">
-          <p>25</p>
-        </div>
+
 
         <div id="timer-buttons">
           <div class="clock-button" id="button-start"><i class="fa fa-play"></i></div>
@@ -29,26 +26,32 @@
           <!-- Change to an icon that better represents reset? -->
           <div class="clock-button" id="button-reset"><i class="fa fa-stop"></i></div>
         </div>
+
+        <div id="status">Focus</div>
+        <div id="timer-display">
+          <p>25</p>
+        </div>
       </div>
 
 
-      <div id="customization-controls">
+      <div class="customization-controls">
         <!-- work buttons -->
         <div class="controls-with-label">
           <p>Session Length</p>
           <div class="controls">
-            <div class="clock-button" id="less-work"><i class="fa fa-angle-down"></i></div>
+            <!-- <i class="fa fa-angle-down"></i> and <i class="fa fa-angle-up"></i> -->
+            <div class="clock-button" id="less-work">-</div>
             <div id="user-work-display">25</div>
-            <div class="clock-button" id="more-work"><i class="fa fa-angle-up"></i></div>
+            <div class="clock-button" id="more-work">+</div>
           </div>
         </div>
         <!-- rest buttons -->
         <div class="controls-with-label">
           <p>Break Length</p>
           <div class="controls">
-            <div class="clock-button" id="less-rest"><i class="fa fa-angle-down"></i></div>
+            <div class="clock-button" id="less-rest">-</div>
             <p id="user-rest-display">5</p>
-            <div class="clock-button" id="more-rest"><i class="fa fa-angle-up"></i></div>
+            <div class="clock-button" id="more-rest">+</div>
           </div>
         </div>
       </div>
