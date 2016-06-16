@@ -16,9 +16,19 @@ body {
   margin: 0 auto;
   text-align: center;
 
+
   display: flex;
   /*align-items: center;*/
   justify-content: center;
+
+  /* making button text unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  cursor: default;
+
 }
 
 button {
@@ -26,6 +36,7 @@ button {
   background-color: #EEEEEE;
   border-radius: 5%;
   outline: none;
+  cursor: pointer;
   /*padding: 5% 20%;*/
 }
 
@@ -34,60 +45,85 @@ canvas {
   /*height: 300px;
   width: 300px;*/
   border: 1px solid #00ADB5;
+  /*cursor: pointer;*/
 }
 
 h1 {
   font-size: 3em;
+
 }
 
 /******* MAIN CLASSES *******/
 
 #app-container {
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*display: flex;
+  justify-content: center;*/
+}
+
+.timer-buttons {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 2em;
+  /*margin-left: 10px;
+  margin-right: 10px;*/
+}
+
+/* or timer-buttons children */
+.timer-buttons div {
+  padding: 0 10%;
 }
 
 .customization-controls {
   display: flex;
-
   justify-content: center;
-  /*height: 200px;*/
-  /*width: 200px;
-  height: 200px;*/
-}
-
-.customization-controls div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /*justify-content: center;*/
-  padding: 0 10%; /* does nothing? */
-  width: 100px; /* makes everything not centered */
-  /*margin: 0 10%;*/
-}
-
-/* this might not be needed*/
-.customization-controls div.children {
-  display: flex;
-  margin: auto;
-  /*text-align: center;*/
-  /*margin: 0 auto;*/
 }
 
 .controls-with-label {
   /*height: 50px;*/
 }
 
+.controls-with-label {
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*justify-content: center;*/
+  padding: 0 10%; /* does nothing? */
+  width: 120px; /* makes everything not centered */
+}
+/*
+.length {
+  font-size: 2em;
+}*/
+
 .controls {
+  min-width: 100; /* this doesn't work */
   display: flex;
   flex-direction: row;
   /*flex-flow: row wrap;*/
   justify-content: space-around;
   align-items: center;
   font-size: 36px;
-  /*flex-direction: row;*/
-  background-color: #ddd;
-  /*align-items: baseline;*/
+  /*background-color: #ddd;*/
   height: 100px;
+}
+
+.controls div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /*width: 50px;  this has to change */
+}
+
+.user-display {
+  margin: 0 20%;
 }
 
 /*.controls.children {
@@ -100,21 +136,10 @@ h1 {
 }
 
 /*******/
-
-#timer-buttons {
-  display: flex;
-  flex-direction: row;
-
-  align-items: flex-start;
-  justify-content: center;
-  font-size: 2em;
-  /*margin-left: 10px;
-  margin-right: 10px;*/
+.clock-button {
+  cursor: pointer;
 }
 
-#timer-buttons div {
-  padding: 0 10%;
-}
 
 #timer-body {
   height: 400;

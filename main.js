@@ -9,8 +9,10 @@
 // TODO: Find out how to center the text in canvas
 // TODO: On pause, the timer also updates with the default value
 // TODO: Make sure relax mode is working as well
-// TODO: Change color for the relax mode.
 // TODO: Change mouse cursor when hovering over the buttons
+// TODO: Maybe just stroke the original circle? (so it is transparent inside)
+// TODO: Make it go from the very top
+// TODO: Decrease the vertical space between the session/break lengths and the numbers
 
 var restColor = '#591FCE';
 var workColor = '00ADB5';
@@ -113,16 +115,6 @@ var timer = {
     console.log("Start Time MINS: " + startTime.min);
     console.log("Start Time SECS: " + startTime.sec);
 
-    // var startTime = getMinSec(startTimeSeconds);
-    // Check if mins and secs are already defined on the screen.
-    // if (timer.currMin || timer.currSec) { // if either of these is defined
-    //   // If yes, use those numbers,
-    //   var totalCurrSeconds = getTotalSeconds(timer.currMin, timer.currSec);
-    //   startTime = getMinSec(totalCurrSeconds);
-    // } else {
-    //   // If no, use the standard ones.
-    //   startTime = getMinSec(seconds);
-    // }
     var currentTime = startTime; // maybe this is not needed? (the startTime var)
     var timeDisplayed = "";
     var secondsLeft = startTimeSeconds;
@@ -176,6 +168,9 @@ var timer = {
   decreaseWork: function() {
     if (!timer.isRunning) {
       timer.userWork--;
+      if (timer.userWork <= 0) {
+        timer.userWork = 1;
+      }
       displayUserWork.innerHTML = timer.userWork;
       display.innerHTML = timer.userWork;
     }
@@ -189,7 +184,10 @@ var timer = {
   decreaseRest: function() {
     if (!timer.isRunning) {
       timer.userRest--;
-      displayUserRest.innerHTML = timer.userRest;
+      if (timer.userRest <= 0) {
+        timer.userRest = 1;
+      }
+      displayUserRest.innerHTML = timer.userRest; // change to innerText?
     }
 
   }
@@ -216,24 +214,29 @@ pauseBtn.addEventListener("click", function() {
 
 resetBtn.addEventListener("click", function() {
   timer.reset();
+  updateCanvas(); // check
 });
 
 // work buttons
 moreWorkBtn.addEventListener("click", function() {
   timer.increaseWork();
+  updateCanvas(); // check
 });
 
 lessWorkBtn.addEventListener("click", function() {
   timer.decreaseWork();
+  updateCanvas(); // check
 });
 
 // rest buttons
 moreRestBtn.addEventListener("click", function() {
   timer.increaseRest();
+  updateCanvas(); // check
 });
 
 lessRestBtn.addEventListener("click", function() {
   timer.decreaseRest();
+  updateCanvas(); // check
 });
 
 canvas.addEventListener("click", function() {
@@ -263,6 +266,7 @@ function drawCanvas() {
   if (timer.isWork) {
     ctx.fillText("Focus", centerX, 120);
   } else {
+    ctx.fillStyle = restColor;
     ctx.fillText("Relax", centerX, 120);
   }
 
@@ -332,8 +336,13 @@ function updateCanvas(secondsLeft, timeObj) {
   ctx.stroke(progressArc);
 
   // show time
-
-  var timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
+  var timeDisplayedOnCanvas;
+  //console.log("******* Current min: " + timeObj.min + " Current sec: " + timeObj.sec);
+  if (timer.isRunning) {
+    timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
+  } else {
+    timeDisplayedOnCanvas = timer.userWork;
+  }
 
   ctx.font = "72px PT Mono";
   ctx.fillText(timeDisplayedOnCanvas, centerX, centerY + 30); // change 30 to halfHeight of the time
