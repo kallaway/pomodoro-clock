@@ -82,10 +82,14 @@ var timer = {
   isWork: true,
   currMin: 0,
   currSec: 0,
+  currTimeObj: {
+    min: 0,
+    sec: 0
+  },
   secondsLeft: 0,
   displayTime: function(timeObj) {
     var timeDisplayed = timeObj.min + " : " + timeObj.sec;
-    display.innerHTML = timeDisplayed;  // change?
+    // display.innerHTML = timeDisplayed;  // change?
   },
   getIntoResetPotision: function() {
     var resetTime = getMinSec(this.getCorrectStartTime()); // change this
@@ -135,6 +139,13 @@ var timer = {
       currentTime = getMinSec(secondsLeft);
       timer.displayTime(currentTime);
 
+      // NEW
+      timer.currMin = currentTime.min;
+      timer.currSec = currentTime.sec;
+      timer.currTimeObj = currentTime;
+
+      console.log("*** *** *** CURRENT TIME: " + currentTime.min + " " + currentTime.sec + " " + " *** *** ***");
+      // current time???
       updateCanvas(secondsLeft, currentTime); // ?? here ???
 
       secondsLeft -= 1;
@@ -162,8 +173,13 @@ var timer = {
     if (!timer.isRunning) {
       timer.userWork++;
       displayUserWork.innerHTML = timer.userWork;
-      display.innerHTML = timer.userWork;
+      // display.innerHTML = timer.userWork;
+      // NEW
+
     }
+    timer.reset();
+    updateCanvas();
+    //updateCanvas(timer.secondsLeft, timer.currTimeObj); // instead of this, have a function that only updates the time in the middle
   },
   decreaseWork: function() {
     if (!timer.isRunning) {
@@ -171,9 +187,13 @@ var timer = {
       if (timer.userWork <= 0) {
         timer.userWork = 1;
       }
+      // updateCanvas(timer.secondsLeft, timer.currTimeObj);
       displayUserWork.innerHTML = timer.userWork;
-      display.innerHTML = timer.userWork;
+      // set the timer here with the userWork
+      //display.innerHTML = timer.userWork;
     }
+    timer.reset();
+    updateCanvas();
   },
   increaseRest: function() {
     if (!timer.isRunning) {
@@ -220,18 +240,24 @@ resetBtn.addEventListener("click", function() {
 // work buttons
 moreWorkBtn.addEventListener("click", function() {
   timer.increaseWork();
-  updateCanvas(); // check
+  //updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
+  // updateCanvas();
 });
 
 lessWorkBtn.addEventListener("click", function() {
   timer.decreaseWork();
-  updateCanvas(); // check
+  // updateCanvas();
+  // updateCanvas();
+  // timer.reset();
+  // updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
 });
 
 // rest buttons
 moreRestBtn.addEventListener("click", function() {
   timer.increaseRest();
-  updateCanvas(); // check
+  // timer.reset();
+  updateCanvas();
+  // updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
 });
 
 lessRestBtn.addEventListener("click", function() {
@@ -299,7 +325,6 @@ function initCanvas() {
   }
 
   ctx.font = "72px PT Mono";
-
   ctx.fillText(timer.initWork, centerX, centerY + 30);
 }
 
@@ -338,6 +363,7 @@ function updateCanvas(secondsLeft, timeObj) {
   // show time
   var timeDisplayedOnCanvas;
   //console.log("******* Current min: " + timeObj.min + " Current sec: " + timeObj.sec);
+  // ** THE timeObj is undefined here!!!
   if (timer.isRunning) {
     timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
   } else {

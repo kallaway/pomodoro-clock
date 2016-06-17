@@ -50,7 +50,14 @@ canvas {
 
 h1 {
   font-size: 3em;
+}
 
+a {
+    color: #fff;
+}
+
+a:hover {
+  color: #00ADB5;
 }
 
 /******* MAIN CLASSES *******/
@@ -165,7 +172,10 @@ h1 {
 }
 
 
-
+.author-info {
+  position:absolute;
+  bottom: 40px;
+}
 
 
 
