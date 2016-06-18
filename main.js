@@ -13,9 +13,13 @@
 // TODO: Maybe just stroke the original circle? (so it is transparent inside)
 // TODO: Make it go from the very top
 // TODO: Decrease the vertical space between the session/break lengths and the numbers
+// TODO: Where is the -2 minutes coming from
+// TODO: Maybe create a fullReset function
+// TODO: Make it so that when I change the time on buttons increaseRest or decreaseRest, the clock is updated with the correct thing
+// TODO: What if I make it possible only to change work when rest is running, and change rest if work is running
 
-var restColor = '#591FCE';
-var workColor = '00ADB5';
+var restColor = '#E2C10B';
+var workColor = '#00ADB5';
 
 var display = document.getElementById('timer-display');
 var displayStatus = document.getElementById('status');
@@ -70,7 +74,6 @@ function getMinSec(seconds) {
     sec: sec
   }
 }
-
 
 var runningTimer;
 var timer = {
@@ -131,15 +134,15 @@ var timer = {
         clearInterval(runningTimer); // this works, but then has to go to rest instead of just stopping
         // change to restMode
         timer.isWork = !timer.isWork;
+        timer.run();
         // if timer.isWork === false, then change the background color to the color of rest
       }
-      // it doesn't work because currentTime gets an object in.
 
       // This block is to display the current time on the timer.
       currentTime = getMinSec(secondsLeft);
       timer.displayTime(currentTime);
 
-      // NEW
+      // NEW - is this needed??
       timer.currMin = currentTime.min;
       timer.currSec = currentTime.sec;
       timer.currTimeObj = currentTime;
@@ -177,8 +180,12 @@ var timer = {
       // NEW
 
     }
-    timer.reset();
-    updateCanvas();
+
+    if (timer.isWork) {
+      timer.reset();
+      updateCanvas();
+    }
+
     //updateCanvas(timer.secondsLeft, timer.currTimeObj); // instead of this, have a function that only updates the time in the middle
   },
   decreaseWork: function() {
@@ -192,14 +199,24 @@ var timer = {
       // set the timer here with the userWork
       //display.innerHTML = timer.userWork;
     }
-    timer.reset();
-    updateCanvas();
+
+    // NEW IF
+    if (timer.isWork) {
+      timer.reset();
+      updateCanvas();
+    }
+
   },
   increaseRest: function() {
     if (!timer.isRunning) {
       timer.userRest++;
       displayUserRest.innerHTML = timer.userRest;
     }
+
+    //if (!timer.isWork) {
+      timer.reset();
+      updateCanvas();
+    //}
   },
   decreaseRest: function() {
     if (!timer.isRunning) {
@@ -209,6 +226,11 @@ var timer = {
       }
       displayUserRest.innerHTML = timer.userRest; // change to innerText?
     }
+
+    //if (!timer.isWork) {
+      timer.reset();
+      updateCanvas();
+    //}
 
   }
 }
@@ -256,13 +278,13 @@ lessWorkBtn.addEventListener("click", function() {
 moreRestBtn.addEventListener("click", function() {
   timer.increaseRest();
   // timer.reset();
-  updateCanvas();
+  // updateCanvas();
   // updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
 });
 
 lessRestBtn.addEventListener("click", function() {
   timer.decreaseRest();
-  updateCanvas(); // check
+  // updateCanvas(); // check
 });
 
 canvas.addEventListener("click", function() {
@@ -284,7 +306,8 @@ function drawCanvas() {
   // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 
   //ctx.beginPath();
-  circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true); // Outer circle
+  // arc(x, y, radius, startAngle, endAngle, anticlockwise)
+  circle.arc(canvasWidth/2, canvasHeight/2, 150, 0, Math.PI*2, true); // Outer circle
   ctx.stroke(circle);
   console.log('the draw function gets called');
 
@@ -293,7 +316,7 @@ function drawCanvas() {
     ctx.fillText("Focus", centerX, 120);
   } else {
     ctx.fillStyle = restColor;
-    ctx.fillText("Relax", centerX, 120);
+    ctx.fillText("RELAX", centerX, 120);
   }
 
   // ctx.font = "72px PT Mono";
@@ -321,7 +344,7 @@ function initCanvas() {
   if (timer.isWork) {
     ctx.fillText("Focus", centerX, 120);
   } else {
-    ctx.fillText("Relax", centerX, 120);
+    ctx.fillText("RELAX!", centerX, 120);
   }
 
   ctx.font = "72px PT Mono";
@@ -346,7 +369,6 @@ function updateCanvas(secondsLeft, timeObj) {
   // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
 
   var secondsPassed = secondsOverall - secondsLeft;
-
   var percentageToDisplay = secondsPassed / secondsOverall;
   // what is the current number of Seconds overall
   var arcPartToShow = Math.PI * 2 * percentageToDisplay; // since we are showing what's done not what's left
@@ -356,8 +378,8 @@ function updateCanvas(secondsLeft, timeObj) {
 
   ctx.lineWidth = 10;
 
-  progressArc = new Path2D();
-  progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, 0, arcPartToShow, false);
+  progressArc = new Path2D(); // check below
+  progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, -Math.PI/2, arcPartToShow - Math.PI/2, false);
   ctx.stroke(progressArc);
 
   // show time
@@ -370,6 +392,8 @@ function updateCanvas(secondsLeft, timeObj) {
     timeDisplayedOnCanvas = timer.userWork;
   }
 
+  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = '#fff';
   ctx.font = "72px PT Mono";
   ctx.fillText(timeDisplayedOnCanvas, centerX, centerY + 30); // change 30 to halfHeight of the time
 

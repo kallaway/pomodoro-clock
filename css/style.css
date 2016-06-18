@@ -44,8 +44,8 @@ canvas {
 
   /*height: 300px;
   width: 300px;*/
-  border: 1px solid #00ADB5;
-  /*cursor: pointer;*/
+  /*border: 1px solid #00ADB5;*/
+  cursor: pointer;
 }
 
 h1 {
@@ -96,14 +96,16 @@ a:hover {
   /*height: 50px;*/
 }
 
-.controls-with-label {
+.controls-with-label { // should they go up?
   font-size: 1.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   /*justify-content: center;*/
   padding: 0 10%; /* does nothing? */
-  width: 120px; /* makes everything not centered */
+  width: 200px;
+   /* makes everything not centered */
+  height: 120px;
 }
 /*
 .length {
