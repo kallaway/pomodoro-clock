@@ -6,17 +6,16 @@
 
 // TODO: get rid of innerHTML
 // TODO: alternate background for work/rest
-// TODO: Find out how to center the text in canvas
 // TODO: On pause, the timer also updates with the default value
 // TODO: Make sure relax mode is working as well
 // TODO: Change mouse cursor when hovering over the buttons
 // TODO: Maybe just stroke the original circle? (so it is transparent inside)
-// TODO: Make it go from the very top
 // TODO: Decrease the vertical space between the session/break lengths and the numbers
 // TODO: Where is the -2 minutes coming from
 // TODO: Maybe create a fullReset function
 // TODO: Make it so that when I change the time on buttons increaseRest or decreaseRest, the clock is updated with the correct thing
 // TODO: What if I make it possible only to change work when rest is running, and change rest if work is running
+// TODO: Annie - Improve Colors
 
 var restColor = '#E2C10B';
 var workColor = '#00ADB5';
@@ -94,12 +93,11 @@ var timer = {
     var timeDisplayed = timeObj.min + " : " + timeObj.sec;
     // display.innerHTML = timeDisplayed;  // change?
   },
-  getIntoResetPotision: function() {
+  getIntoResetPotision: function() { // This should be it
     var resetTime = getMinSec(this.getCorrectStartTime()); // change this
     console.log("RESET TIME IS: ");
     console.log(resetTime);
     this.displayTime(resetTime);
-
   },
   getCorrectStartTime: function() {
     // if there is currMin or currSec time available use that,
@@ -167,19 +165,18 @@ var timer = {
     timer.isRunning = false;
     clearInterval(runningTimer);
     timer.secondsLeft = 0;
-    timer.getIntoResetPotision();
+    timer.getIntoResetPotision(); // This should be it
   },
   getMinSec: function(mins) {
     return 5; // TEMP
   },
   increaseWork: function() {
-    if (!timer.isRunning) {
+    // if (!timer.isRunning) {
       timer.userWork++;
       displayUserWork.innerHTML = timer.userWork;
       // display.innerHTML = timer.userWork;
       // NEW
-
-    }
+    // }
 
     if (timer.isWork) {
       timer.reset();
@@ -189,7 +186,7 @@ var timer = {
     //updateCanvas(timer.secondsLeft, timer.currTimeObj); // instead of this, have a function that only updates the time in the middle
   },
   decreaseWork: function() {
-    if (!timer.isRunning) {
+    // if (!timer.isRunning) {
       timer.userWork--;
       if (timer.userWork <= 0) {
         timer.userWork = 1;
@@ -198,7 +195,7 @@ var timer = {
       displayUserWork.innerHTML = timer.userWork;
       // set the timer here with the userWork
       //display.innerHTML = timer.userWork;
-    }
+    // }
 
     // NEW IF
     if (timer.isWork) {
@@ -208,29 +205,29 @@ var timer = {
 
   },
   increaseRest: function() {
-    if (!timer.isRunning) {
+    // if (!timer.isRunning) {
       timer.userRest++;
       displayUserRest.innerHTML = timer.userRest;
-    }
+    // }
 
-    //if (!timer.isWork) {
+    if (!timer.isWork) { // do I need timer.isRunning here?
       timer.reset();
       updateCanvas();
-    //}
+    }
   },
   decreaseRest: function() {
-    if (!timer.isRunning) {
+    // if (!timer.isRunning) {
       timer.userRest--;
       if (timer.userRest <= 0) {
         timer.userRest = 1;
       }
       displayUserRest.innerHTML = timer.userRest; // change to innerText?
-    }
+    // }
 
-    //if (!timer.isWork) {
+    if (!timer.isWork) {
       timer.reset();
       updateCanvas();
-    //}
+    }
 
   }
 }
@@ -389,7 +386,11 @@ function updateCanvas(secondsLeft, timeObj) {
   if (timer.isRunning) {
     timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
   } else {
-    timeDisplayedOnCanvas = timer.userWork;
+    if (timer.isWork) {
+      timeDisplayedOnCanvas = timer.userWork;
+    } else {
+      timeDisplayedOnCanvas = timer.userRest;
+    }
   }
 
   ctx.fillStyle = '#fff';

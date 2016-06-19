@@ -177,6 +177,7 @@ a:hover {
 .author-info {
   position:absolute;
   bottom: 40px;
+  padding-right: 10px;
 }
 
 
