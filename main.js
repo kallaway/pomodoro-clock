@@ -17,6 +17,8 @@
 // TODO: What if I make it possible only to change work when rest is running, and change rest if work is running
 // TODO: Annie - Improve Colors
 
+// For the Future: Have init() function. maybe I do have it already.
+
 var restColor = '#E2C10B';
 var workColor = '#00ADB5';
 
@@ -34,6 +36,44 @@ var displayUserRest = document.getElementById('user-rest-display');
 
 var canvas = document.getElementById('pomodoro-display-canvas');
 var ctx = canvas.getContext('2d');
+
+// if (ctx.webkitBackingStorePixelRatio < 2) {
+//   ratio = window.devicePixelRatio || 1;
+//   canvas.setAttribute('width', window.innerWidth * ratio);
+//   canvas.setAttribute('height', window.innerHeight * ratio);
+// }
+var devicePixelRatio = window.devicePixelRatio || 1,
+    backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                         ctx.mozBackingStorePixelRatio ||
+                         ctx.msBackingStorePixelRatio ||
+                         ctx.oBackingStorePixelRatio ||
+                         ctx.backingStorePixelRatio || 1;
+
+var ratio = devicePixelRatio / backingStoreRatio;
+
+if (typeof auto === 'undefined') {
+        auto = true;
+    }
+
+
+
+if (auto && devicePixelRatio !== backingStoreRatio) {
+  var canvasWidth = canvas.width;
+  var canvasHeight = canvas.height;
+
+  canvas.width = canvasWidth * ratio;
+  canvas.height = canvasHeight * ratio;
+  canvas.style.width = canvasWidth + 'px';
+  canvas.style.height = canvasHeight + 'px';
+
+  ctx.scale(ratio, ratio);
+}
+
+// if (window.devicePixelRatio == 2) {
+//   canvas.setAttribute('height', 800);
+//   canvas.setAttribute('width', 800);
+//   ctx.scale(2,2);
+// }
 
 var progressArc;
 var canvasWidth = 400;
@@ -376,6 +416,8 @@ function updateCanvas(secondsLeft, timeObj) {
   ctx.lineWidth = 10;
 
   progressArc = new Path2D(); // check below
+
+  // var arcToShowAdjusted = arcPartToShow - Math.PI/2 == - Math.PI/2 ? 0.01 : arcPartToShow - Math.PI/2;
   progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, -Math.PI/2, arcPartToShow - Math.PI/2, false);
   ctx.stroke(progressArc);
 

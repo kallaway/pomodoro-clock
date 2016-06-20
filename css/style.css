@@ -16,7 +16,6 @@ body {
   margin: 0 auto;
   text-align: center;
 
-
   display: flex;
   /*align-items: center;*/
   justify-content: center;
@@ -105,7 +104,7 @@ a:hover {
   padding: 0 10%; /* does nothing? */
   width: 200px;
    /* makes everything not centered */
-  height: 120px;
+  height: 100px;
 }
 /*
 .length {
@@ -181,7 +180,23 @@ a:hover {
 }
 
 
+@media (max-width: 700px) {
+  h1 {
+    font-size: 2em;
+  }
 
+  .customization-controls {
+    /*margin-top: -2em;*/
+
+  }
+
+  .author-info {
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 2em;
+    /*display: block;*/
+  }
+}
 
 
 
