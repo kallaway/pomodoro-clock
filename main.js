@@ -1,21 +1,12 @@
-// Have a variable that stores the full 25 minutes.
-// Have a var that stores 5 minutes of rest.
-// Buttons are only available for clicking when the timer is stopped.
-
-// Maybe internally only deal with seconds? Then display when needed but don't conver them anywhere in the app?
-
 // TODO: get rid of innerHTML
-// TODO: alternate background for work/rest
 // TODO: On pause, the timer also updates with the default value
 // TODO: Make sure relax mode is working as well
-// TODO: Change mouse cursor when hovering over the buttons
-// TODO: Maybe just stroke the original circle? (so it is transparent inside)
 // TODO: Decrease the vertical space between the session/break lengths and the numbers
 // TODO: Where is the -2 minutes coming from
 // TODO: Maybe create a fullReset function
 // TODO: Make it so that when I change the time on buttons increaseRest or decreaseRest, the clock is updated with the correct thing
 // TODO: What if I make it possible only to change work when rest is running, and change rest if work is running
-// TODO: Annie - Improve Colors
+// TODO: Annie's Help - Improve Colors
 
 // For the Future: Have init() function. maybe I do have it already.
 
@@ -37,11 +28,6 @@ var displayUserRest = document.getElementById('user-rest-display');
 var canvas = document.getElementById('pomodoro-display-canvas');
 var ctx = canvas.getContext('2d');
 
-// if (ctx.webkitBackingStorePixelRatio < 2) {
-//   ratio = window.devicePixelRatio || 1;
-//   canvas.setAttribute('width', window.innerWidth * ratio);
-//   canvas.setAttribute('height', window.innerHeight * ratio);
-// }
 var devicePixelRatio = window.devicePixelRatio || 1,
     backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
                          ctx.mozBackingStorePixelRatio ||
@@ -55,8 +41,6 @@ if (typeof auto === 'undefined') {
         auto = true;
     }
 
-
-
 if (auto && devicePixelRatio !== backingStoreRatio) {
   var canvasWidth = canvas.width;
   var canvasHeight = canvas.height;
@@ -69,23 +53,15 @@ if (auto && devicePixelRatio !== backingStoreRatio) {
   ctx.scale(ratio, ratio);
 }
 
-// if (window.devicePixelRatio == 2) {
-//   canvas.setAttribute('height', 800);
-//   canvas.setAttribute('width', 800);
-//   ctx.scale(2,2);
-// }
-
-var progressArc;
-var canvasWidth = 400;
-var canvasHeight = 400;
-var centerX = 200;
-var centerY = 200;
+var progressArc,
+    canvasWidth = 400,
+    canvasHeight = 400,
+    centerX = 200,
+    centerY = 200;
 
 // Find a quick way to calculate the number of seconds in a given
 var work = 25;
 var rest = 5;
-
-// two similar functions??
 
 function getTotalSeconds(minutes, seconds) {
   return minutes * 60 + seconds;
@@ -96,7 +72,7 @@ function getSecFromObj(timeObj) {
 }
 
 function getMinSec(seconds) {
-  console.log(`SECONDS from getMinSec - ${seconds}`);
+  // console.log(`SECONDS from getMinSec - ${seconds}`);
   var min = Math.floor(seconds / 60);
   var sec = seconds - min * 60;
 
@@ -105,8 +81,8 @@ function getMinSec(seconds) {
     sec = "0" + sec;
   }
 
-  console.log(`MIN from getMinSec - ${min}`);
-  console.log(`SEC from getMinSec - ${sec}`);
+  // console.log(`MIN from getMinSec - ${min}`);
+  // console.log(`SEC from getMinSec - ${sec}`);
 
   return {
     min: min,
@@ -122,25 +98,21 @@ var timer = {
   userWork: 25,
   userRest: 5,
   isWork: true,
-  currMin: 0,
-  currSec: 0,
-  currTimeObj: {
-    min: 0,
-    sec: 0
-  },
+  // currMin: 0,
+  // currSec: 0,
+  // currTimeObj: {
+  //   min: 0,
+  //   sec: 0
+  // },
   secondsLeft: 0,
   displayTime: function(timeObj) {
     var timeDisplayed = timeObj.min + " : " + timeObj.sec;
-    // display.innerHTML = timeDisplayed;  // change?
   },
-  getIntoResetPotision: function() { // This should be it
-    var resetTime = getMinSec(this.getCorrectStartTime()); // change this
-    console.log("RESET TIME IS: ");
-    console.log(resetTime);
+  getIntoResetPotision: function() {
+    var resetTime = getMinSec(this.getCorrectStartTime());
     this.displayTime(resetTime);
   },
   getCorrectStartTime: function() {
-    // if there is currMin or currSec time available use that,
     if (timer.secondsLeft) {
       return timer.secondsLeft;
     } else {
@@ -149,23 +121,22 @@ var timer = {
     }
     // convert into seconds? or into the MinSec object and return to the function.
   },
-  run: function(seconds) { // does it have to receive any arguments?
+  run: function(seconds) {
     timer.isRunning = true;
 
     // time to Start from in seconds.
     var startTimeSeconds = timer.getCorrectStartTime();
-    console.log("CORRECT START TIME IN SECONDS IS: " + startTimeSeconds);
+    // console.log("CORRECT START TIME IN SECONDS IS: " + startTimeSeconds);
     var startTime = getMinSec(startTimeSeconds);
-    console.log("START TIME INFO WE'RE CHECKING");
-    console.log("Start Time MINS: " + startTime.min);
-    console.log("Start Time SECS: " + startTime.sec);
+    // console.log("START TIME INFO WE'RE CHECKING");
+    // console.log("Start Time MINS: " + startTime.min);
+    // console.log("Start Time SECS: " + startTime.sec);
 
-    var currentTime = startTime; // maybe this is not needed? (the startTime var)
+    var currentTime = startTime;
     var timeDisplayed = "";
     var secondsLeft = startTimeSeconds;
     // var secondsLeft = getSecFromObj(currentTime);
 
-    // or workTimer VS restTimer
     runningTimer = setInterval(function() {
       // stop the timer if the time has passed.
       if (secondsLeft === 0) {
@@ -173,22 +144,13 @@ var timer = {
         // change to restMode
         timer.isWork = !timer.isWork;
         timer.run();
-        // if timer.isWork === false, then change the background color to the color of rest
       }
 
       // This block is to display the current time on the timer.
       currentTime = getMinSec(secondsLeft);
       timer.displayTime(currentTime);
 
-      // NEW - is this needed??
-      timer.currMin = currentTime.min;
-      timer.currSec = currentTime.sec;
-      timer.currTimeObj = currentTime;
-
-      console.log("*** *** *** CURRENT TIME: " + currentTime.min + " " + currentTime.sec + " " + " *** *** ***");
-      // current time???
-      updateCanvas(secondsLeft, currentTime); // ?? here ???
-
+      updateCanvas(secondsLeft, currentTime);
       secondsLeft -= 1;
       // Testing
       timer.secondsLeft = secondsLeft;
@@ -205,25 +167,18 @@ var timer = {
     timer.isRunning = false;
     clearInterval(runningTimer);
     timer.secondsLeft = 0;
-    timer.getIntoResetPotision(); // This should be it
+    timer.getIntoResetPotision();
   },
   getMinSec: function(mins) {
     return 5; // TEMP
   },
   increaseWork: function() {
-    // if (!timer.isRunning) {
-      timer.userWork++;
-      displayUserWork.innerHTML = timer.userWork;
-      // display.innerHTML = timer.userWork;
-      // NEW
-    // }
-
+    timer.userWork++;
+    displayUserWork.innerHTML = timer.userWork;
     if (timer.isWork) {
       timer.reset();
       updateCanvas();
     }
-
-    //updateCanvas(timer.secondsLeft, timer.currTimeObj); // instead of this, have a function that only updates the time in the middle
   },
   decreaseWork: function() {
     // if (!timer.isRunning) {
@@ -231,11 +186,7 @@ var timer = {
       if (timer.userWork <= 0) {
         timer.userWork = 1;
       }
-      // updateCanvas(timer.secondsLeft, timer.currTimeObj);
       displayUserWork.innerHTML = timer.userWork;
-      // set the timer here with the userWork
-      //display.innerHTML = timer.userWork;
-    // }
 
     // NEW IF
     if (timer.isWork) {
@@ -245,10 +196,8 @@ var timer = {
 
   },
   increaseRest: function() {
-    // if (!timer.isRunning) {
       timer.userRest++;
       displayUserRest.innerHTML = timer.userRest;
-    // }
 
     if (!timer.isWork) { // do I need timer.isRunning here?
       timer.reset();
@@ -256,13 +205,11 @@ var timer = {
     }
   },
   decreaseRest: function() {
-    // if (!timer.isRunning) {
       timer.userRest--;
       if (timer.userRest <= 0) {
         timer.userRest = 1;
       }
       displayUserRest.innerHTML = timer.userRest; // change to innerText?
-    // }
 
     if (!timer.isWork) {
       timer.reset();
@@ -273,7 +220,6 @@ var timer = {
 }
 
 // Attach Event Listeners to Buttons
-
 startBtn.addEventListener("click", function() {
   // Read
   // Have a function to read the current mins and seconds.
@@ -282,9 +228,7 @@ startBtn.addEventListener("click", function() {
     timer.run(25); // HERE SOME CHECK AS TO WHAT TIME SHOULD IT GET FED
     // Here also update the canvas with the right length of the arc and the time.
   }
-
-  setTimeout(5000);
-
+  setTimeout(5000); // do I need this?
 });
 
 pauseBtn.addEventListener("click", function() {
@@ -299,36 +243,26 @@ resetBtn.addEventListener("click", function() {
 // work buttons
 moreWorkBtn.addEventListener("click", function() {
   timer.increaseWork();
-  //updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
-  // updateCanvas();
 });
 
 lessWorkBtn.addEventListener("click", function() {
   timer.decreaseWork();
-  // updateCanvas();
-  // updateCanvas();
-  // timer.reset();
-  // updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
 });
 
 // rest buttons
 moreRestBtn.addEventListener("click", function() {
   timer.increaseRest();
-  // timer.reset();
-  // updateCanvas();
-  // updateCanvas(timer.secondsLeft, timer.currTimeObj); // check
 });
 
 lessRestBtn.addEventListener("click", function() {
   timer.decreaseRest();
-  // updateCanvas(); // check
 });
 
 canvas.addEventListener("click", function() {
   if (timer.isRunning) {
     timer.pause();
   } else {
-    timer.run(timer.userWork); // or rest??? check this
+    timer.run(timer.userWork);
   }
 });
 
@@ -340,13 +274,11 @@ function drawCanvas() {
   ctx.fillStyle = "#EEEEEE";
   ctx.lineWidth = 5;
   ctx.strokeStyle = "#EEEEEE";
-  // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 
-  //ctx.beginPath();
   // arc(x, y, radius, startAngle, endAngle, anticlockwise)
   circle.arc(canvasWidth/2, canvasHeight/2, 150, 0, Math.PI*2, true); // Outer circle
   ctx.stroke(circle);
-  console.log('the draw function gets called');
+  // console.log('the draw function gets called');
 
   ctx.font = "48px PT Mono";
   if (timer.isWork) {
@@ -355,10 +287,6 @@ function drawCanvas() {
     ctx.fillStyle = restColor;
     ctx.fillText("RELAX", centerX, 120);
   }
-
-  // ctx.font = "72px PT Mono";
-  // ctx.textAlign = 'center';
-  // ctx.fillText(timer.initWork, centerX, centerY + 30);
 
   // on top of the circle put the type of activity
   // add time in the center?
@@ -375,7 +303,7 @@ function initCanvas() {
   //ctx.beginPath();
   circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true); // Outer circle
   ctx.stroke(circle);
-  console.log('the draw function gets called');
+  // console.log('the draw function gets called');
 
   ctx.font = "48px PT Mono";
   if (timer.isWork) {
@@ -402,29 +330,32 @@ function updateCanvas(secondsLeft, timeObj) {
     ctx.fillStyle = restColor;
     ctx.strokeStyle = restColor;
   }
-  // console.log("SECONDS LEFT WHEN UPDATING CANVAS: " + secondsLeft);
-  // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
+  // // console.log("SECONDS LEFT WHEN UPDATING CANVAS: " + secondsLeft);
+  // // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
 
   var secondsPassed = secondsOverall - secondsLeft;
   var percentageToDisplay = secondsPassed / secondsOverall;
   // what is the current number of Seconds overall
   var arcPartToShow = Math.PI * 2 * percentageToDisplay; // since we are showing what's done not what's left
 
-  console.log("percentageToDisplay: " + percentageToDisplay);
-  console.log("Arc part to show: " + arcPartToShow);
+  // console.log("percentageToDisplay: " + percentageToDisplay);
+  if (!timer.isWork) {
+    // console.log("The timer has just changed to RELAX");
+  }
+  // console.log("Arc part to show: " + arcPartToShow);
 
   ctx.lineWidth = 10;
 
   progressArc = new Path2D(); // check below
 
-  // var arcToShowAdjusted = arcPartToShow - Math.PI/2 == - Math.PI/2 ? 0.01 : arcPartToShow - Math.PI/2;
+  if (arcPartToShow == 2 * Math.PI) {
+    arcPartToShow = 0.001;
+  }
   progressArc.arc(canvasWidth / 2, canvasHeight / 2, 150, -Math.PI/2, arcPartToShow - Math.PI/2, false);
   ctx.stroke(progressArc);
 
   // show time
   var timeDisplayedOnCanvas;
-  //console.log("******* Current min: " + timeObj.min + " Current sec: " + timeObj.sec);
-  // ** THE timeObj is undefined here!!!
   if (timer.isRunning) {
     timeDisplayedOnCanvas = timeObj.min + ":" + timeObj.sec;
   } else {
