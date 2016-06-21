@@ -15,38 +15,19 @@ body {
   background-color: #303841;
   color: #00ADB5;
   font-family: "PT Mono", sans-serif;
-
   margin: 0 auto;
   text-align: center;
-
   display: flex;
-  /*align-items: center;*/
   justify-content: center;
-
   /* making button text unselectable */
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-
   cursor: default;
-
-}
-
-button {
-  /* Maybe I should use something else instead of buttons */
-  background-color: #EEEEEE;
-  border-radius: 5%;
-  outline: none;
-  cursor: pointer;
-  /*padding: 5% 20%;*/
 }
 
 canvas {
-
-  /*height: 300px;
-  width: 300px;*/
-  /*border: 1px solid #00ADB5;*/
   cursor: pointer;
 }
 
@@ -63,15 +44,12 @@ a:hover {
 }
 
 /******* MAIN CLASSES *******/
-
 #app-container {
   width: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /*display: flex;
-  justify-content: center;*/
 }
 
 .timer-buttons {
@@ -81,11 +59,8 @@ a:hover {
   align-items: flex-start;
   justify-content: center;
   font-size: 2em;
-  /*margin-left: 10px;
-  margin-right: 10px;*/
 }
 
-/* or timer-buttons children */
 .timer-buttons div {
   padding: 0 10%;
 }
@@ -96,18 +71,11 @@ a:hover {
 }
 
 .controls-with-label {
-  /*height: 50px;*/
-}
-
-.controls-with-label { // should they go up?
-  font-size: 1.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*justify-content: center;*/
-  padding: 0 10%; /* does nothing? */
+  padding: 0 10%;
   width: 200px;
-   /* makes everything not centered */
   height: 100px;
 }
 
@@ -115,11 +83,9 @@ a:hover {
   min-width: 100;
   display: flex;
   flex-direction: row;
-  /*flex-flow: row wrap;*/
   justify-content: space-around;
   align-items: center;
   font-size: 36px;
-  /*background-color: #ddd;*/
   height: 100px;
 }
 
@@ -127,23 +93,17 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /*width: 50px;  this has to change */
 }
 
 .user-display {
   margin: 0 20%;
 }
 
-/*.controls.children {
-  width: 100px;
-}*/
-
 .fa {
   font-size: 2em;
   color: #00ADB5;
 }
 
-/*******/
 .clock-button {
   cursor: pointer;
 }
@@ -170,10 +130,6 @@ a:hover {
 .author-info {
   margin: 0 auto;
   margin-top: 25%;
-/*   position: absolute;
-  bottom: 40px;
-  left: 0;
-  right: 0; */
 }
 
 @media (max-width: 700px) {

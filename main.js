@@ -1,49 +1,36 @@
-// TODO: get rid of innerHTML
-// TODO: On pause, the timer also updates with the default value
-// TODO: Make sure relax mode is working as well
-// TODO: Decrease the vertical space between the session/break lengths and the numbers
-// TODO: Where is the -2 minutes coming from
-// TODO: Maybe create a fullReset function
-// TODO: Make it so that when I change the time on buttons increaseRest or decreaseRest, the clock is updated with the correct thing
-// TODO: What if I make it possible only to change work when rest is running, and change rest if work is running
-// TODO: Annie's Help - Improve Colors
+var restColor = '#E2C10B',
+    workColor = '#00ADB5';
 
-// For the Future: Have init() function. maybe I do have it already.
+var display = document.getElementById('timer-display'),
+    displayStatus = document.getElementById('status'),
+    startBtn = document.getElementById('button-start'),
+    pauseBtn = document.getElementById('button-pause'),
+    resetBtn = document.getElementById('button-reset'),
+    moreWorkBtn = document.getElementById('more-work'),
+    lessWorkBtn = document.getElementById('less-work'),
+    moreRestBtn = document.getElementById('more-rest'),
+    lessRestBtn = document.getElementById('less-rest'),
+    displayUserWork = document.getElementById('user-work-display'),
+    displayUserRest = document.getElementById('user-rest-display');
 
-var restColor = '#E2C10B';
-var workColor = '#00ADB5';
-
-var display = document.getElementById('timer-display');
-var displayStatus = document.getElementById('status');
-var startBtn = document.getElementById('button-start');
-var pauseBtn = document.getElementById('button-pause');
-var resetBtn = document.getElementById('button-reset');
-var moreWorkBtn = document.getElementById('more-work');
-var lessWorkBtn = document.getElementById('less-work');
-var moreRestBtn = document.getElementById('more-rest');
-var lessRestBtn = document.getElementById('less-rest');
-var displayUserWork = document.getElementById('user-work-display');
-var displayUserRest = document.getElementById('user-rest-display');
-
-var canvas = document.getElementById('pomodoro-display-canvas');
-var ctx = canvas.getContext('2d');
+var canvas = document.getElementById('pomodoro-display-canvas'),
+    ctx = canvas.getContext('2d');
 
 var devicePixelRatio = window.devicePixelRatio || 1,
     backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
-                         ctx.mozBackingStorePixelRatio ||
-                         ctx.msBackingStorePixelRatio ||
-                         ctx.oBackingStorePixelRatio ||
-                         ctx.backingStorePixelRatio || 1;
-
-var ratio = devicePixelRatio / backingStoreRatio;
+    ctx.mozBackingStorePixelRatio ||
+    ctx.msBackingStorePixelRatio ||
+    ctx.oBackingStorePixelRatio ||
+    ctx.backingStorePixelRatio || 1,
+    ratio = devicePixelRatio / backingStoreRatio;
 
 if (typeof auto === 'undefined') {
         auto = true;
     }
 
 if (auto && devicePixelRatio !== backingStoreRatio) {
-  var canvasWidth = canvas.width;
-  var canvasHeight = canvas.height;
+  var canvasWidth = canvas.width,
+      canvasHeight = canvas.height;
 
   canvas.width = canvasWidth * ratio;
   canvas.height = canvasHeight * ratio;
@@ -72,17 +59,12 @@ function getSecFromObj(timeObj) {
 }
 
 function getMinSec(seconds) {
-  // console.log(`SECONDS from getMinSec - ${seconds}`);
-  var min = Math.floor(seconds / 60);
-  var sec = seconds - min * 60;
+  var min = Math.floor(seconds / 60),
+      sec = seconds - min * 60;
 
-  //careful because now min is a number, sec is a string
   if (sec < 10) {
     sec = "0" + sec;
   }
-
-  // console.log(`MIN from getMinSec - ${min}`);
-  // console.log(`SEC from getMinSec - ${sec}`);
 
   return {
     min: min,
@@ -98,12 +80,6 @@ var timer = {
   userWork: 25,
   userRest: 5,
   isWork: true,
-  // currMin: 0,
-  // currSec: 0,
-  // currTimeObj: {
-  //   min: 0,
-  //   sec: 0
-  // },
   secondsLeft: 0,
   displayTime: function(timeObj) {
     var timeDisplayed = timeObj.min + " : " + timeObj.sec;
@@ -119,29 +95,21 @@ var timer = {
       var workOrRest = timer.isWork ? timer.userWork : timer.userRest;
       return getTotalSeconds(workOrRest, 0);
     }
-    // convert into seconds? or into the MinSec object and return to the function.
   },
   run: function(seconds) {
     timer.isRunning = true;
 
     // time to Start from in seconds.
-    var startTimeSeconds = timer.getCorrectStartTime();
-    // console.log("CORRECT START TIME IN SECONDS IS: " + startTimeSeconds);
-    var startTime = getMinSec(startTimeSeconds);
-    // console.log("START TIME INFO WE'RE CHECKING");
-    // console.log("Start Time MINS: " + startTime.min);
-    // console.log("Start Time SECS: " + startTime.sec);
-
-    var currentTime = startTime;
-    var timeDisplayed = "";
-    var secondsLeft = startTimeSeconds;
-    // var secondsLeft = getSecFromObj(currentTime);
+    var startTimeSeconds = timer.getCorrectStartTime(),
+        startTime = getMinSec(startTimeSeconds),
+        currentTime = startTime,
+        timeDisplayed = "",
+        secondsLeft = startTimeSeconds;
 
     runningTimer = setInterval(function() {
       // stop the timer if the time has passed.
       if (secondsLeft === 0) {
-        clearInterval(runningTimer); // this works, but then has to go to rest instead of just stopping
-        // change to restMode
+        clearInterval(runningTimer);
         timer.isWork = !timer.isWork;
         timer.run();
       }
@@ -152,16 +120,13 @@ var timer = {
 
       updateCanvas(secondsLeft, currentTime);
       secondsLeft -= 1;
-      // Testing
       timer.secondsLeft = secondsLeft;
     }, 1000);
 
   },
   pause: function() {
-    // if clicked once, stops the timer,
     timer.isRunning = false;
     clearInterval(runningTimer);
-    // if clicked twice, continues running it
   },
   reset: function() {
     timer.isRunning = false;
@@ -170,7 +135,7 @@ var timer = {
     timer.getIntoResetPotision();
   },
   getMinSec: function(mins) {
-    return 5; // TEMP
+    return 5;
   },
   increaseWork: function() {
     timer.userWork++;
@@ -181,7 +146,6 @@ var timer = {
     }
   },
   decreaseWork: function() {
-    // if (!timer.isRunning) {
       timer.userWork--;
       if (timer.userWork <= 0) {
         timer.userWork = 1;
@@ -199,7 +163,7 @@ var timer = {
       timer.userRest++;
       displayUserRest.innerHTML = timer.userRest;
 
-    if (!timer.isWork) { // do I need timer.isRunning here?
+    if (!timer.isWork) {
       timer.reset();
       updateCanvas();
     }
@@ -209,7 +173,7 @@ var timer = {
       if (timer.userRest <= 0) {
         timer.userRest = 1;
       }
-      displayUserRest.innerHTML = timer.userRest; // change to innerText?
+      displayUserRest.innerHTML = timer.userRest;
 
     if (!timer.isWork) {
       timer.reset();
@@ -219,16 +183,12 @@ var timer = {
   }
 }
 
-// Attach Event Listeners to Buttons
 startBtn.addEventListener("click", function() {
-  // Read
-  // Have a function to read the current mins and seconds.
   // Check if the timer is already running. if so either block the button, or start over every time it is pressed
   if (!timer.isRunning) {
-    timer.run(25); // HERE SOME CHECK AS TO WHAT TIME SHOULD IT GET FED
-    // Here also update the canvas with the right length of the arc and the time.
+    timer.run(25);
   }
-  setTimeout(5000); // do I need this?
+  setTimeout(5000);
 });
 
 pauseBtn.addEventListener("click", function() {
@@ -237,7 +197,7 @@ pauseBtn.addEventListener("click", function() {
 
 resetBtn.addEventListener("click", function() {
   timer.reset();
-  updateCanvas(); // check
+  updateCanvas();
 });
 
 // work buttons
@@ -267,18 +227,14 @@ canvas.addEventListener("click", function() {
 });
 
 // Working with canvas
-
 function drawCanvas() {
-  // draw the circle
   var circle = new Path2D();
   ctx.fillStyle = "#EEEEEE";
   ctx.lineWidth = 5;
   ctx.strokeStyle = "#EEEEEE";
 
-  // arc(x, y, radius, startAngle, endAngle, anticlockwise)
-  circle.arc(canvasWidth/2, canvasHeight/2, 150, 0, Math.PI*2, true); // Outer circle
+  circle.arc(canvasWidth/2, canvasHeight/2, 150, 0, Math.PI*2, true);
   ctx.stroke(circle);
-  // console.log('the draw function gets called');
 
   ctx.font = "48px PT Mono";
   if (timer.isWork) {
@@ -287,9 +243,6 @@ function drawCanvas() {
     ctx.fillStyle = restColor;
     ctx.fillText("RELAX", centerX, 120);
   }
-
-  // on top of the circle put the type of activity
-  // add time in the center?
 }
 
 function initCanvas() {
@@ -298,12 +251,9 @@ function initCanvas() {
   ctx.fillStyle = "#EEEEEE";
   ctx.lineWidth = 5;
   ctx.strokeStyle = "#EEEEEE";
-  // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
 
-  //ctx.beginPath();
-  circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true); // Outer circle
+  circle.arc(canvasWidth / 2, canvasHeight / 2,150, 0, Math.PI*2, true);
   ctx.stroke(circle);
-  // console.log('the draw function gets called');
 
   ctx.font = "48px PT Mono";
   if (timer.isWork) {
@@ -320,7 +270,6 @@ function updateCanvas(secondsLeft, timeObj) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawCanvas();
-  // full circle is 2 PI.
   if (timer.isWork) {
     var secondsOverall = timer.userWork * 60;
     ctx.fillStyle = workColor;
@@ -330,23 +279,14 @@ function updateCanvas(secondsLeft, timeObj) {
     ctx.fillStyle = restColor;
     ctx.strokeStyle = restColor;
   }
-  // // console.log("SECONDS LEFT WHEN UPDATING CANVAS: " + secondsLeft);
-  // // console.log("SECONDS OVERALL WHEN UPDATING CANVAS: " + secondsOverall);
 
-  var secondsPassed = secondsOverall - secondsLeft;
-  var percentageToDisplay = secondsPassed / secondsOverall;
-  // what is the current number of Seconds overall
-  var arcPartToShow = Math.PI * 2 * percentageToDisplay; // since we are showing what's done not what's left
-
-  // console.log("percentageToDisplay: " + percentageToDisplay);
-  if (!timer.isWork) {
-    // console.log("The timer has just changed to RELAX");
-  }
-  // console.log("Arc part to show: " + arcPartToShow);
+  var secondsPassed = secondsOverall - secondsLeft,
+      percentageToDisplay = secondsPassed / secondsOverall,
+      arcPartToShow = Math.PI * 2 * percentageToDisplay;
 
   ctx.lineWidth = 10;
 
-  progressArc = new Path2D(); // check below
+  progressArc = new Path2D();
 
   if (arcPartToShow == 2 * Math.PI) {
     arcPartToShow = 0.001;
@@ -369,12 +309,8 @@ function updateCanvas(secondsLeft, timeObj) {
   ctx.fillStyle = '#fff';
   ctx.strokeStyle = '#fff';
   ctx.font = "72px PT Mono";
-  ctx.fillText(timeDisplayedOnCanvas, centerX, centerY + 30); // change 30 to halfHeight of the time
-
-  //
+  ctx.fillText(timeDisplayedOnCanvas, centerX, centerY + 30);
 }
-
-// then with time fill it with the right amount of color
 
 function init() {
   initCanvas();
